@@ -488,7 +488,7 @@ function animate() {
       
       <div className="footer-bottom">
         <p className="footer-credit">
-          Diseñado y desarrollado con ❤️ por <strong>Kenta</strong>
+          Diseñado y desarrollado con amor por <strong>Kenta</strong>
         </p>
         <p className="footer-copyright">
           © {new Date().getFullYear()} WallpaperHub. Todos los derechos reservados.
