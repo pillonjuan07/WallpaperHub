@@ -177,36 +177,33 @@ const handleDownload = async (wallpaper) => {
     const response = await fetch(wallpaper.url);
     const blob = await response.blob();
     
+    // Determinar extensión correcta
+    const extension = wallpaper.type === 'video' ? 'mp4' : 
+                     wallpaper.type === 'gif' ? 'gif' : 'jpg';
+    const filename = `${wallpaper.title}.${extension}`;
+    
     // Crear URL temporal del blob
     const blobUrl = window.URL.createObjectURL(blob);
     
     // Crear link de descarga
     const link = document.createElement('a');
     link.href = blobUrl;
-    
-    // Determinar extensión correcta
-    const extension = wallpaper.type === 'video' ? 'mp4' : 
-                     wallpaper.type === 'gif' ? 'gif' : 'jpg';
-    link.download = `${wallpaper.title}.${extension}`;
+    link.download = filename;
+    link.style.display = 'none';
     
     // Trigger descarga
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
     
-    // Limpiar URL temporal después de un momento
-    setTimeout(() => window.URL.revokeObjectURL(blobUrl), 100);
+    // Limpiar inmediatamente después del click
+    setTimeout(() => {
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    }, 100);
+    
   } catch (error) {
     console.error('Error al descargar:', error);
-    // Fallback: intento de descarga directa
-    const link = document.createElement('a');
-    link.href = wallpaper.url;
-    const extension = wallpaper.type === 'video' ? 'mp4' : 
-                     wallpaper.type === 'gif' ? 'gif' : 'jpg';
-    link.download = `${wallpaper.title}.${extension}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    alert('Error al descargar. Intentá de nuevo.');
   }
 };
 
